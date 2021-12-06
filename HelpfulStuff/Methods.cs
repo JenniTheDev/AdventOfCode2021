@@ -1,4 +1,6 @@
-﻿namespace HelpfulStuff
+﻿using System.Text.RegularExpressions;
+
+namespace HelpfulStuff
 {
     public static class Methods
     {
@@ -40,6 +42,35 @@
             }
 
             return increases;
+        }
+
+        public static int GetPosition(string path)
+        {
+            int forward = 0;
+            int depth = 0;
+            int aim = 0;
+            foreach(var input in File.ReadAllLines(path))
+            {
+                var dirGetter = Regex.Match(input, @"\d+").Value;
+                int x = int.Parse(dirGetter);
+                if (input.Contains("forward") )
+                {
+                    forward += x;
+                    depth += (aim * x);
+                }
+                else if (input.Contains("down"))
+                {
+                    // depth += x;
+                    aim += x;
+                }
+                else if (input.Contains("up"))
+                {
+                    // depth -= x;
+                    aim -= x;
+                }
+            }
+            
+            return forward * depth;
         }
     }
 }
